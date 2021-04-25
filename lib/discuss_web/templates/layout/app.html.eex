@@ -1,33 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Discuss · Phoenix Framework</title>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-  </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <main role="main" class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <%= @inner_content %>
-    </main>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discuss · Phoenix Framework</title>
+  <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" />
+  <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+</head>
+
+<body class="h-screen flex flex-col">
+
+  <%# Header start %>
+  <div class="p-4 mx-auto bg-blue-300 w-full">
+    <a href="<%= Routes.topic_path(@conn, :index)%>" class="text-2xl font-bold hover:text-gray-50">Discussions</a>
+  </div>
+  <%# Header end %>
+
+  <%# Flashes start %>
+  <%# Info start %>
+  <%= if get_flash(@conn, :info) do %>
+  <div class="bg-blue-200">
+    <div class="text-sm p-2 italic">
+      <%= get_flash(@conn, :info) %>
+    </div>
+  </div>
+  <% end %>
+  <%# Info end %>
+
+  <%# Error start %>
+  <%= if get_flash(@conn, :error) do %>
+  <div class="bg-red-200">
+    <div class="text-sm p-2 italic">
+      <%= get_flash(@conn, :error) %>
+    </div>
+  </div>
+  <% end %>
+  <%# Error end %>
+  <%# Flashes end %>
+
+  <%# Body start %>
+  <div class="bg-blue-50 flex-1">
+    <%= @inner_content %>
+  </div>
+  <%# Body end %>
+</body>
+
 </html>

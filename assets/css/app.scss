@@ -1,36 +1,59 @@
-/* This file is for your main application css. */
-@import "./phoenix.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
 
-/* Alerts and form errors */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+.btn-common {
+    @apply w-20;
+    @apply h-10;
+    @apply rounded-sm;
+    @apply text-xs;
+    @apply font-bold;
 }
-.alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
+
+.btn-common:hover {
+    @apply text-gray-50;
 }
-.alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
+
+.my-btn {
+    @apply btn-common;
+    @apply bg-blue-200;
 }
-.alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
+  
+.my-btn:hover {
+    @apply bg-blue-300;
 }
-.alert p {
-  margin-bottom: 0;
+
+.my-del-btn {
+    @apply btn-common;
+    @apply bg-red-300;
 }
-.alert:empty {
-  display: none;
+  
+.my-del-btn:hover {
+    @apply bg-red-400;
 }
-.invalid-feedback {
-  color: #a94442;
-  display: block;
-  margin: -1rem 0 2rem;
+
+.my-txt-item {
+    @apply truncate;
+    @apply text-sm;
+    @apply p-2;
+    @apply italic;
+    @apply bg-blue-200;
+    @apply h-10;
+}
+
+.my-txt-item:hover {
+    @apply underline;
+    @apply bg-blue-300;
+}
+
+.my-edit-txt {
+    @apply w-full;
+    @apply p-1;
+}
+
+.my-edit-txt:focus {
+    @apply outline-none;
+    @apply ring;
+    @apply border-blue-300;
 }

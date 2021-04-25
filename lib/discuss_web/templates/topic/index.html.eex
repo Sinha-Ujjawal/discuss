@@ -1,0 +1,31 @@
+<div class="p-10">
+    <div class="grid grid-cols-10 gap-4">
+        <a href="<%= Routes.topic_path(@conn, :index)%>"
+            class="text-lg font-bold hover:text-blue-300 col-span-full">Topics</a>
+
+        <%= if (length(@topics) > 0) do %>
+        <%= for topic <- @topics do %>
+        <%= link to: Routes.topic_path(@conn, :edit, topic), class: "my-txt-item col-span-9" do %>
+        <%= topic.title %>
+        <% end %>
+        <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete do %>
+        <button class="my-del-btn">
+            Delete
+        </button>
+        <% end %>
+        <% end %>
+        <% else %>
+        <div class="col-span-full">
+            No Topics!
+        </div>
+        <% end %>
+
+        <span class="col-span-9">
+        </span>
+        <%= link to: Routes.topic_path(@conn, :new) do %>
+        <button class="my-btn">
+            Create
+        </button>
+        <% end %>
+    </div>
+</div>
