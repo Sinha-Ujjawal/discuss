@@ -13,9 +13,27 @@
 <body class="h-screen flex flex-col">
 
   <%# Header start %>
-  <div class="p-4 mx-auto bg-blue-300 w-full">
-    <a href="<%= Routes.topic_path(@conn, :index)%>" class="text-2xl font-bold hover:text-gray-50">Discussions</a>
-  </div>
+
+  <ul class="p-4 bg-blue-300 flex justify-between">
+    <li class="mr-3">
+      <a href="<%= Routes.topic_path(@conn, :index)%>" class="text-2xl font-bold hover:text-gray-50">Discussions</a>
+    </li>
+    <li class="mr-3">
+      <%= if (@conn.assigns.user == nil) do %>
+      <a href="<%= Routes.auth_path(@conn, :request, "github")%>">
+        <button class="my-del-btn">
+          Sign in with Github
+        </button>
+      </a>
+      <% else %>
+      <a href="<%= Routes.auth_path(@conn, :signout)%>">
+        <button class="my-del-btn">
+          Sign Out
+        </button>
+      </a>
+      <% end %>
+    </li>
+  </ul>
   <%# Header end %>
 
   <%# Flashes start %>
