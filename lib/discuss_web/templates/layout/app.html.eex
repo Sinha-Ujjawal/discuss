@@ -10,24 +10,23 @@
   <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
 </head>
 
-<body class="h-screen flex flex-col">
+<body class="body">
 
   <%# Header start %>
-
-  <ul class="p-4 bg-blue-300 flex justify-between">
-    <li class="mr-3">
-      <a href="<%= Routes.topic_path(@conn, :index)%>" class="text-2xl font-bold hover:text-gray-50">Discussions</a>
+  <ul class="header">
+    <li class="header-item">
+      <a href="<%= Routes.topic_path(@conn, :index)%>" class="logo">Discussions</a>
     </li>
-    <li class="mr-3">
+    <li class="header-item">
       <%= if (@conn.assigns.user == nil) do %>
       <a href="<%= Routes.auth_path(@conn, :request, "github")%>">
-        <button class="my-del-btn">
+        <button class="sign-in-btn">
           Sign in with Github
         </button>
       </a>
       <% else %>
       <a href="<%= Routes.auth_path(@conn, :signout)%>">
-        <button class="my-del-btn">
+        <button class="sign-out-btn">
           Sign Out
         </button>
       </a>

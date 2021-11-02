@@ -3,6 +3,30 @@
 @tailwind utilities;
 @tailwind screens;
 
+.body {
+    @apply h-screen;
+    @apply flex flex-col;
+}
+
+.header {
+    @apply p-4;
+    @apply bg-blue-300;
+    @apply flex justify-between;
+}
+
+.header-item {
+    @apply mr-3;
+}
+
+.logo {
+    @apply text-2xl;
+    @apply font-bold;
+}
+
+.logo:hover {
+    @apply text-gray-50;
+}
+
 .btn-common {
     @apply w-20;
     @apply h-10;
@@ -13,6 +37,19 @@
 
 .btn-common:hover {
     @apply text-gray-50;
+}
+
+.sign-in-btn {
+    @apply w-20;
+    @apply h-10;
+    @apply rounded-sm;
+    @apply text-xs;
+    @apply font-bold;
+    @apply bg-red-300;
+}
+
+.sign-out-btn {
+    @apply sign-in-btn
 }
 
 .my-btn {

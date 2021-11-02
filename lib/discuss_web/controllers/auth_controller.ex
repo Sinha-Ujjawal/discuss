@@ -11,7 +11,7 @@ defmodule DiscussWeb.AuthController do
   end
 
   # callback for OAuth
-  def callback(conn = %{assigns: %{ueberauth_auth: auth, user: user}}, params)
+  def callback(conn = %{assigns: %{ueberauth_auth: auth, user: user}}, _params)
       when is_nil(user) do
     user_params = %{
       email: auth.info.email,
@@ -30,7 +30,7 @@ defmodule DiscussWeb.AuthController do
         |> put_flash(:info, "Welcome back!")
         |> put_session(:user_id, user.id)
 
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn
         |> put_flash(:error, "Error signing in")
     end
