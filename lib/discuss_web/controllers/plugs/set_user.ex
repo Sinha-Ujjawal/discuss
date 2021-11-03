@@ -1,5 +1,5 @@
 defmodule DiscussWeb.Plugs.SetUser do
-  import Plug.Conn
+  use DiscussWeb, :controller
   alias Discuss.Repo
   alias Discuss.User
 

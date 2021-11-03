@@ -4,6 +4,8 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Repo
   import Ecto.Query
 
+  plug DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+
   def index(conn, _params) do
     topics =
       from(topic in Topic)
@@ -15,7 +17,7 @@ defmodule DiscussWeb.TopicController do
 
   def new(conn, _params) do
     changeset = Topic.changeset(%Topic{}, %{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "topic.html", changeset: changeset, new: true)
   end
 
   def create(conn, %{"topic" => topic}) do
@@ -30,31 +32,51 @@ defmodule DiscussWeb.TopicController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Invalid Input!")
-        |> render("new.html", changeset: changeset)
+        |> render("topic.html", changeset: changeset, new: true)
+    end
+  end
+
+  def show(conn, %{"id" => topic_id}) do
+    if topic = Repo.get(Topic, topic_id) do
+      changeset = Topic.changeset(topic)
+      render(conn, "topic.html", changeset: changeset, topic: topic)
+    else
+      conn
+      |> put_flash(:error, "Topic does not exist!")
+      |> redirect(to: Routes.topic_path(conn, :index))
     end
   end
 
   def edit(conn, %{"id" => topic_id}) do
-    topic = Repo.get(Topic, topic_id)
-    changeset = Topic.changeset(topic)
-
-    render(conn, "edit.html", changeset: changeset, topic: topic)
+    if topic = Repo.get(Topic, topic_id) do
+      changeset = Topic.changeset(topic)
+      render(conn, "topic.html", changeset: changeset, topic: topic)
+    else
+      conn
+      |> put_flash(:error, "Topic does not exist!")
+      |> redirect(to: Routes.topic_path(conn, :index))
+    end
   end
 
   def update(conn, %{"id" => topic_id, "topic" => topic}) do
-    topic_old = Topic |> Repo.get(topic_id)
-    changeset = topic_old |> Topic.changeset(topic)
+    if topic_old = Topic |> Repo.get(topic_id) do
+      changeset = topic_old |> Topic.changeset(topic)
 
-    case Repo.update(changeset) do
-      {:ok, _topic} ->
-        conn
-        |> put_flash(:info, "Topic Updated")
-        |> redirect(to: Routes.topic_path(conn, :index))
+      case Repo.update(changeset) do
+        {:ok, _topic} ->
+          conn
+          |> put_flash(:info, "Topic Updated")
+          |> redirect(to: Routes.topic_path(conn, :index))
 
-      {:error, changeset} ->
-        conn
-        |> put_flash(:error, "Invalid Input!")
-        |> render("edit.html", changeset: changeset, topic: topic_old)
+        {:error, changeset} ->
+          conn
+          |> put_flash(:error, "Invalid Input!")
+          |> render("topic.html", changeset: changeset, topic: topic_old)
+      end
+    else
+      conn
+      |> put_flash(:error, "Topic does not exist!")
+      |> redirect(to: Routes.topic_path(conn, :index))
     end
   end
 

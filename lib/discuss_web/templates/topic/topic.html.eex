@@ -1,0 +1,34 @@
+<%= if @conn.assigns.user do %>
+    <%= form_for @changeset, (
+            if assigns[:new] do
+                Routes.topic_path(@conn, :create)
+            else
+                Routes.topic_path(@conn, :update, @topic)
+            end) , fn f -> %>
+        <div class="grid grid-cols-2 gap-4 p-10">
+            <span class="col-span-full">
+                <%= text_input f, :title, placeholder: "Enter your topic here...", class: "my-edit-txt" %>
+            </span>
+            <span class="italic text-sm text-red-500 col-span-full">
+                <%= error_tag f, :title %>
+            </span>
+            <%= link to: Routes.topic_path(@conn, :index) do %>
+                <%= submit "Submit", class: "my-btn" %>
+                <button class="my-btn col-span-full" type="button">
+                    Cancel
+                </button>
+            <% end %>
+        </div>
+    <% end %>
+<% else %>
+    <div class="grid grid-cols-2 gap-4 p-10">
+        <span class="col-span-full">
+            <div class="my-edit-txt"> <%= @conn.assigns.topic.title %></div>
+        </span>
+        <%= link to: Routes.topic_path(@conn, :index) do %>
+            <button class="my-btn col-span-full" type="button">
+                Back
+            </button>
+        <% end %>
+    </div>
+<% end %>

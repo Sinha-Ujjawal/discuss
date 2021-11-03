@@ -5,14 +5,19 @@
 
         <%= if (length(@topics) > 0) do %>
             <%= for topic <- @topics do %>
-                <%= link to: Routes.topic_path(@conn, :edit, topic), class: "my-txt-item col-span-9" do %>
-                <%= topic.title %>
-                <% end %>
-
-                <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete do %>
-                <button class="my-del-btn">
-                    Delete
-                </button>
+                <%= if @conn.assigns.user do %>
+                    <%= link to: Routes.topic_path(@conn, :edit, topic), class: "my-txt-item col-span-9" do %>
+                        <%= topic.title %>
+                    <% end %>
+                    <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete do %>
+                        <button class="my-del-btn">
+                            Delete
+                        </button>
+                    <% end %>
+                <% else %>
+                    <%= link to: Routes.topic_path(@conn, :show, topic), class: "my-txt-item col-span-full" do %>
+                        <%= topic.title %>
+                    <% end %>
                 <% end %>
             <% end %>
         <% else %>
@@ -23,10 +28,12 @@
 
         <span class="col-span-9"></span>
 
-        <%= link to: Routes.topic_path(@conn, :new) do %>
-        <button class="my-btn">
-            Create
-        </button>
+        <%= if @conn.assigns.user do %>
+            <%= link to: Routes.topic_path(@conn, :new) do %>
+                <button class="my-btn">
+                    Create
+                </button>
+            <% end %>
         <% end %>
     </div>
 </div>
