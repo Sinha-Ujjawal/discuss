@@ -37,20 +37,20 @@
 
   <%# Flashes start %>
   <%# Info start %>
-  <%= if get_flash(@conn, :info) do %>
+  <%= if msg = get_flash(@conn, :info) do %>
   <div class="bg-blue-200">
     <div class="text-sm p-2 italic">
-      <%= get_flash(@conn, :info) %>
+      <%= msg %>
     </div>
   </div>
   <% end %>
   <%# Info end %>
 
   <%# Error start %>
-  <%= if get_flash(@conn, :error) do %>
+  <%= if msg = get_flash(@conn, :error) do %>
   <div class="bg-red-200">
     <div class="text-sm p-2 italic">
-      <%= get_flash(@conn, :error) %>
+      <%= msg %>
     </div>
   </div>
   <% end %>
