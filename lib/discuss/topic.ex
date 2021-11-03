@@ -8,11 +8,13 @@ defmodule Discuss.Topic do
   schema "topics" do
     field :title, :string
     timestamps()
+    belongs_to :user, Discuss.User
     # # equivalent to
     # model topics:
     #   title: string
     #   inserted_at: datetime
     #   updated_at: datetime
+    #   user_id: bigint
     # #
   end
 

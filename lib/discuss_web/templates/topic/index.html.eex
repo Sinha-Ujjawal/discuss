@@ -5,7 +5,7 @@
 
         <%= if (length(@topics) > 0) do %>
             <%= for topic <- @topics do %>
-                <%= if @conn.assigns.user do %>
+                <%= if @conn.assigns.user && @conn.assigns.user.id == topic.user_id do %>
                     <%= link to: Routes.topic_path(@conn, :edit, topic), class: "my-txt-item col-span-9" do %>
                         <%= topic.title %>
                     <% end %>
