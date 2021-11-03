@@ -7,9 +7,12 @@ defmodule Discuss.Topic do
 
   schema "topics" do
     field :title, :string
+    timestamps()
     # # equivalent to
     # model topics:
     #   title: string
+    #   inserted_at: datetime
+    #   updated_at: datetime
     # #
   end
 
