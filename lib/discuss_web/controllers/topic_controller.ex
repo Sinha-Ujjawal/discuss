@@ -6,6 +6,8 @@ defmodule DiscussWeb.TopicController do
   import Ecto.Query
 
   plug(DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete])
+  plug(:ensure_topic when action in [:show, :edit, :update, :delete])
+  plug(:ensure_topic_owner when action in [:edit, :update, :delete])
 
   def index(conn, _params) do
     topics =
@@ -38,57 +40,62 @@ defmodule DiscussWeb.TopicController do
     end
   end
 
-  def show(conn, %{"id" => topic_id}) do
-    if topic = Repo.get(Topic, topic_id) do
-      changeset = Topic.changeset(topic)
-      render(conn, "topic.html", changeset: changeset, topic: topic)
-    else
-      conn
-      |> put_flash(:error, "Topic does not exist!")
-      |> redirect(to: Routes.topic_path(conn, :index))
+  def show(conn = %{assigns: %{topic: topic}}, _params) do
+    changeset = Topic.changeset(topic)
+    render(conn, "topic.html", changeset: changeset, topic: topic)
+  end
+
+  def edit(conn = %{assigns: %{topic: topic}}, _params) do
+    changeset = Topic.changeset(topic)
+    render(conn, "topic.html", changeset: changeset, topic: topic)
+  end
+
+  def update(conn = %{assigns: %{topic: topic_old}}, _params = %{"topic" => topic}) do
+    changeset = topic_old |> Topic.changeset(topic)
+
+    case Repo.update(changeset) do
+      {:ok, _topic} ->
+        conn
+        |> put_flash(:info, "Topic Updated")
+        |> redirect(to: Routes.topic_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, "Invalid Input!")
+        |> render("topic.html", changeset: changeset, topic: topic_old)
     end
   end
 
-  def edit(conn, %{"id" => topic_id}) do
-    if topic = Repo.get(Topic, topic_id) do
-      changeset = Topic.changeset(topic)
-      render(conn, "topic.html", changeset: changeset, topic: topic)
-    else
-      conn
-      |> put_flash(:error, "Topic does not exist!")
-      |> redirect(to: Routes.topic_path(conn, :index))
-    end
-  end
-
-  def update(conn, %{"id" => topic_id, "topic" => topic}) do
-    if topic_old = Topic |> Repo.get(topic_id) do
-      changeset = topic_old |> Topic.changeset(topic)
-
-      case Repo.update(changeset) do
-        {:ok, _topic} ->
-          conn
-          |> put_flash(:info, "Topic Updated")
-          |> redirect(to: Routes.topic_path(conn, :index))
-
-        {:error, changeset} ->
-          conn
-          |> put_flash(:error, "Invalid Input!")
-          |> render("topic.html", changeset: changeset, topic: topic_old)
-      end
-    else
-      conn
-      |> put_flash(:error, "Topic does not exist!")
-      |> redirect(to: Routes.topic_path(conn, :index))
-    end
-  end
-
-  def delete(conn, %{"id" => topic_id}) do
+  def delete(conn = %{assigns: %{topic: topic}}, _params) do
     # being very explicit about errors
     # will raise error and the process will exit!
-    Topic |> Repo.get!(topic_id) |> Repo.delete!()
+    topic |> Repo.delete!()
 
     conn
     |> put_flash(:info, "Topic Deleted")
     |> redirect(to: Routes.topic_path(conn, :index))
+  end
+
+  # plugs
+  def ensure_topic(conn = %{params: %{"id" => topic_id}}, _params) do
+    if topic = Repo.get(Topic, topic_id) do
+      assign(conn, :topic, topic)
+    else
+      conn
+      |> put_flash(:error, "Topic does not exist!")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt
+    end
+  end
+
+  def ensure_topic_owner(conn = %{assigns: %{user: user, topic: topic}}, _params) do
+    if user.id == topic.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You don't have permission for this topic!")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt
+    end
   end
 end
