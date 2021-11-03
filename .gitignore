@@ -35,4 +35,5 @@ npm-debug.log
 
 
 # Custom Files
-config/local.exs
+/.elixir_ls/*
+env.ps1

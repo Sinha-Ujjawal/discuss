@@ -48,9 +48,9 @@ defmodule DiscussWeb.Router do
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/live" do
       pipe_through(:browser)
-      live_dashboard("/dashboard", metrics: DiscussWeb.Telemetry)
+      live_dashboard("dashboard", metrics: DiscussWeb.Telemetry, ecto_repos: [Discuss.Repo])
     end
   end
 end
