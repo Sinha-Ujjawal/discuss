@@ -6,7 +6,7 @@ defmodule DiscussWeb.TopicController do
   import Ecto.Query
 
   plug(DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete])
-  plug(:ensure_topic when action in [:edit, :update, :delete])
+  plug(:ensure_topic when action in [:show, :edit, :update, :delete])
   plug(:ensure_topic_owner when action in [:edit, :update, :delete])
 
   def index(conn, _params) do
@@ -16,6 +16,10 @@ defmodule DiscussWeb.TopicController do
       |> Repo.all()
 
     render(conn, "index.html", topics: topics)
+  end
+
+  def show(conn = %{assigns: %{topic: topic}}, _params) do
+    render(conn, "topic_show.html", topic: topic)
   end
 
   def new(conn, _params) do

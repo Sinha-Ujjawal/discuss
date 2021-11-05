@@ -1,0 +1,8 @@
+<div class="grid grid-cols-2 gap-4 p-10">
+    <span class="col-span-full my-txt">
+        <%= @topic.title %>
+    </span>
+    <%= link to: Routes.topic_path(@conn, :index) do %>
+        <button class="my-btn col-span-full" type="button">Back</button>
+    <% end %>
+</div>
