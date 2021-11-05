@@ -6,7 +6,7 @@ defmodule DiscussWeb.TopicController do
   import Ecto.Query
 
   plug(DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete])
-  plug(:ensure_topic when action in [:show, :edit, :update, :delete])
+  plug(:ensure_topic when action in [:edit, :update, :delete])
   plug(:ensure_topic_owner when action in [:edit, :update, :delete])
 
   def index(conn, _params) do
@@ -20,7 +20,7 @@ defmodule DiscussWeb.TopicController do
 
   def new(conn, _params) do
     changeset = Topic.changeset(%Topic{}, %{})
-    render(conn, "topic.html", changeset: changeset, new: true)
+    render(conn, "topic_form.html", changeset: changeset, new: true)
   end
 
   def create(conn = %{assigns: %{user: user}}, _params = %{"topic" => topic}) do
@@ -36,18 +36,13 @@ defmodule DiscussWeb.TopicController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Invalid Input!")
-        |> render("topic.html", changeset: changeset, new: true)
+        |> render("topic_form.html", changeset: changeset, new: true)
     end
-  end
-
-  def show(conn = %{assigns: %{topic: topic}}, _params) do
-    changeset = Topic.changeset(topic)
-    render(conn, "topic.html", changeset: changeset, topic: topic)
   end
 
   def edit(conn = %{assigns: %{topic: topic}}, _params) do
     changeset = Topic.changeset(topic)
-    render(conn, "topic.html", changeset: changeset, topic: topic)
+    render(conn, "topic_form.html", changeset: changeset, topic: topic)
   end
 
   def update(conn = %{assigns: %{topic: topic_old}}, _params = %{"topic" => topic}) do
@@ -62,7 +57,7 @@ defmodule DiscussWeb.TopicController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Invalid Input!")
-        |> render("topic.html", changeset: changeset, topic: topic_old)
+        |> render("topic_form.html", changeset: changeset, topic: topic_old)
     end
   end
 

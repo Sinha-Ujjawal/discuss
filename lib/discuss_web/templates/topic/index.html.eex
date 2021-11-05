@@ -6,16 +6,15 @@
         <%= if (length(@topics) > 0) do %>
             <%= for topic <- @topics do %>
                 <%= if @conn.assigns.user && @conn.assigns.user.id == topic.user_id do %>
-                    <%= link to: Routes.topic_path(@conn, :edit, topic), class: "my-txt-item col-span-9" do %>
-                        <%= topic.title %>
+                    <span class="my-txt-item col-span-8"><%= topic.title %></span>
+                    <%= link to: Routes.topic_path(@conn, :edit, topic) do %>
+                        <button class="my-btn col-span-1">Edit</button>
                     <% end %>
                     <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete do %>
                         <button class="my-del-btn">Delete</button>
                     <% end %>
                 <% else %>
-                    <%= link to: Routes.topic_path(@conn, :show, topic), class: "my-txt-item col-span-full" do %>
-                        <%= topic.title %>
-                    <% end %>
+                    <span class="my-txt-item col-span-8"><%= topic.title %></span>
                 <% end %>
             <% end %>
         <% else %>
