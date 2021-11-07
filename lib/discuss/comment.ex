@@ -3,7 +3,7 @@ defmodule Discuss.Comment do
   import Ecto.Changeset
   import Jason
 
-  @derive {Jason.Encoder, only: [:comment_text]}
+  @derive {Jason.Encoder, only: [:comment_text, :user]}
 
   schema "comments" do
     field(:comment_text, :string)

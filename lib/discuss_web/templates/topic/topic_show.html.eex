@@ -11,7 +11,8 @@
     <textarea id="comment-txt" class="my-edit-txt col-span-full"></textarea>
     <button id="add-comment-btn" class="my-btn col-span-full">Add Comment</button>
 
-    <ul id="comments-list"></ul>
+    <div id="comments-list" class="grid grid-cols-2 gap-2">
+    </div>
 
     <%= link to: Routes.topic_path(@conn, :index) do %>
         <button class="my-btn col-span-full" type="button">Back</button>

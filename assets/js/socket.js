@@ -55,11 +55,15 @@ let socket = new Socket("/socket", { params: { token: window.userToken } });
 socket.connect();
 
 const createSocket = (topicId) => {
-  const comment_template = (comment) => {
+  const comment_template = ({ comment_text, user }) => {
+    const email = user ? user.email : "Anonymous";
     return `
-    <li>
-      ${comment.comment_text}
-    </li>
+    <div class="my-txt-item col-span-1">
+      ${comment_text}
+    </div>
+    <div class="my-txt-item col-span-1">
+      ${email}
+    </div>
     `;
   };
 
