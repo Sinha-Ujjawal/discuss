@@ -9,7 +9,7 @@ defmodule Discuss.Topic do
     field :title, :string
     timestamps()
     belongs_to :user, Discuss.User
-    has_many :topics, Discuss.Topic
+    has_many :comments, Discuss.Comment
     # # equivalent to
     # model topics:
     #   title: string

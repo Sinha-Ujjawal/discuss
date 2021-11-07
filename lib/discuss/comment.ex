@@ -1,12 +1,15 @@
 defmodule Discuss.Comment do
   use Ecto.Schema
   import Ecto.Changeset
+  import Jason
+
+  @derive {Jason.Encoder, only: [:comment_text]}
 
   schema "comments" do
-    field :comment_text, :string
+    field(:comment_text, :string)
 
-    belongs_to :topic, Discuss.Topic
-    belongs_to :user, Discuss.User
+    belongs_to(:topic, Discuss.Topic)
+    belongs_to(:user, Discuss.User)
 
     timestamps()
   end

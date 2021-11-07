@@ -1,7 +1,18 @@
-<div class="grid grid-cols-2 gap-4 p-10">
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        window.createSocket(<%= @topic.id %>);
+    });
+</script>
+<div class="grid grid-cols-1 gap-4 p-4">
     <span class="col-span-full my-txt">
         <%= @topic.title %>
     </span>
+
+    <textarea id="comment-txt" class="my-edit-txt col-span-full"></textarea>
+    <button id="add-comment-btn" class="my-btn col-span-full">Add Comment</button>
+
+    <ul id="comments-list"></ul>
+
     <%= link to: Routes.topic_path(@conn, :index) do %>
         <button class="my-btn col-span-full" type="button">Back</button>
     <% end %>
